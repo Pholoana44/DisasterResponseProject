@@ -34,8 +34,6 @@ The code includes:
 - run.py: Python script for the flask web app that has overview visualization of messages distribution and classifying of mesage by the model as user captures. Below is the command to execute the script
   python ../app/run.py
   
-- Other supporting files include the SQLite database file containing message data and tuned model.
-
 ## Results <a name="results"></a>
 The model achieves good performance in classifying disaster response messages into relevant categories. Evaluation metrics such as precision, recall, and F1-score are used to assess the model's effectiveness.
 
