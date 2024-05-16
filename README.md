@@ -29,10 +29,12 @@ The code includes:
   python ../data/process_data.py ../data/disaster_messages.csv ../data/disaster_categories.csv ../data/DisasterResponse.db
   
 - train_classifier.py: Python script for building, training and evaluating ML pipeline for the message classifier. Below is a command to execute the script where the database is in /data directory and model is generated and stored in the same directory as the script
-  train_classifier.py ../data/DisasterResponse.db tuned_model.pkl
+  python train_classifier.py ../data/DisasterResponse.db tuned_model.pkl
   
 - run.py: Python script for the flask web app that has overview visualization of messages distribution and classifying of mesage by the model as user captures. Below is the command to execute the script
   python ../app/run.py
+
+- The other files include data and app folder that contains the database, csv input files and flask web app  
   
 ## Results <a name="results"></a>
 The model achieves good performance in classifying disaster response messages into relevant categories. Evaluation metrics such as precision, recall, and F1-score are used to assess the model's effectiveness.
