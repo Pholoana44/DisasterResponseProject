@@ -40,7 +40,7 @@ def load_data(database_filepath):
 
     # Extract feature (X), target (Y) data and category names
     X = message_categories['message']
-    Y = df.drop(columns=['id', 'message', 'original', 'genre'])
+    Y = message_categories.drop(columns=['id', 'message', 'original', 'genre'])
     category_names = Y.columns.tolist()
 
     return X, Y, category_names
@@ -162,7 +162,7 @@ def main():
         # Load data from SQLite database
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
-        X, Y = load_data(database_filepath)
+        X, Y, category_names = load_data(database_filepath)
         # Split data into training and testing
         X_train, X_test, Y_train, Y_test = train_test_split(
             X, Y, test_size=0.8, random_state=42)
