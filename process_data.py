@@ -59,10 +59,13 @@ def clean_data(message_categ):
     # Drop the original categories column and concatenate cleaned categories
     message_categ.drop(columns=['categories'], inplace=True)
     message_categ = pd.concat([message_categ, categories], axis=1)
-
+    
+    # Drop rows where related is 2
+    message_categ = message_categ[message_categ['related'] != 2]
+    
     # Remove duplicate rows
     message_categ.drop_duplicates(inplace=True)
-
+    assert len(message_categ[message_categ.duplicated()]) == 0
     return message_categ
 
 
