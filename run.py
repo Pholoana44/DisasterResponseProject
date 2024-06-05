@@ -1,3 +1,5 @@
+"This a module of the project for the web app"
+#importing necessary libraries
 import json
 import plotly
 import pandas as pd
@@ -8,7 +10,6 @@ from flask import render_template, request, jsonify
 from plotly.graph_objs import Bar
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
-
 
 app = Flask(__name__)
 
@@ -41,6 +42,21 @@ def index():
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
     
+    #genre and aid_related status
+    aid_relatA = df[df['aid_related']==1].groupby('genre').count()['message']
+    aid_relatB = df[df['aid_related']==0].groupby('genre').count()['message']
+    genre_names = list(aid_relatA.index)
+
+    # let's calculate distribution of classes with 1
+    class_distr1 = df.drop(['id', 'message', 'original', 'genre'], axis = 1).sum()/len(df)
+
+    #sorting values in ascending
+    class_distr1 = class_distr1.sort_values(ascending = False)
+
+    #series of values that have 0 in classes
+    class_distr0 = (class_distr1 -1) * -1
+    class_name = list(class_distr1.index)
+    
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
     graphs = [
@@ -48,18 +64,56 @@ def index():
             'data': [
                 Bar(
                     x=genre_names,
-                    y=genre_counts
+                    y=aid_relatA,
+                    name = 'Aid related'
+                ),
+                Bar(
+                    x=genre_names,
+                    y=aid_relatB,
+                    name = 'Aid Unrelated'
                 )
             ],
 
             'layout': {
-                'title': 'Distribution of Message Genres',
+                'title': 'Distribution of Message Genres and \'aid related\' ',
                 'yaxis': {
                     'title': "Count"
                 },
                 'xaxis': {
                     'title': "Genre"
-                }
+                },
+                'barmode' : 'group'
+            }
+        },
+        {
+            'data': [
+                 Bar(
+                     x=class_name,
+                     y=class_distr1,
+                     name = 'class = 1'
+                     #orientation = 'h'
+                 ),
+                 Bar(
+                     x=class_name,
+                     y=class_distr0,
+                     name = 'class = 0',
+                     marker = dict(
+                                  color = 'rgb(225, 230, 247)'
+                                  )
+                     #orientation = 'h'
+                     )
+               ],
+              
+               'layout': {
+                'title': 'Distribution of labels within classes',
+                'yaxis': {
+                    'title': "Distribution"
+                },
+                'xaxis': {
+                    'title': "Class",
+                #'tickangle': -45
+                },
+                'barmode' : 'stack'
             }
         }
     ]
